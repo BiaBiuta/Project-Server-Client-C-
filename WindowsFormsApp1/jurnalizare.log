@@ -1,0 +1,16 @@
+2024-03-20 12:18:52,443 [1] INFO  ChildRepository - Create organizingRepository
+2024-03-20 12:18:52,456 [1] INFO  ChildRepository - Create childRepository
+2024-03-20 12:18:52,456 [1] INFO  ChildRepository - Create organizingRepository
+2024-03-20 12:18:52,457 [1] INFO  ChildRepository - Create registrationRepository
+2024-03-20 12:18:52,460 [1] INFO  ChildRepository - entry in find by name in OrganizinfRepo
+2024-03-20 12:18:52,523 [1] INFO  ChildRepository - Found ConsoleApp3.domain.Organizing instances
+2024-03-20 12:18:52,523 [1] INFO  ChildRepository - entry in find by name in OrganizinfRepo
+2024-03-20 12:18:52,523 [1] INFO  ChildRepository - Found ConsoleApp3.domain.Organizing instances
+2024-03-20 12:18:52,525 [1] INFO  ChildRepository - entry in find by name in OrganizinfRepo
+2024-03-20 12:18:52,525 [1] INFO  ChildRepository - return System.Collections.Generic.List`1[ConsoleApp3.domain.Organizing] instances
+2024-03-20 12:18:52,527 [1] INFO  ChildRepository - entry
+2024-03-20 12:18:52,530 [1] INFO  ChildRepository - Found ConsoleApp3.domain.Sample instances
+2024-03-20 12:18:52,530 [1] INFO  ChildRepository - retun ConsoleApp3.domain.Sample
+2024-03-20 12:18:52,531 [1] INFO  ChildRepository - entry in ListChildrenForSAmple in registrationRepository
+2024-03-20 12:18:52,533 [1] INFO  ChildRepository - entry in NumberOfChildrenForSample in registrationRepository
+2024-03-20 12:18:52,537 [1] INFO  ChildRepository - Create childRepository
