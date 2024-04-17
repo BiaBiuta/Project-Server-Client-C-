@@ -51,24 +51,14 @@ namespace Server
         return _registrationRepository.ListChildrenForSample(sample);
     }
 
-    public int numberOfRegistration(Sample sample)
-    {
-        return _registrationRepository.NumberOfChildrenForSample(sample);
-    }
+
     public Registration registerChild(Child child, Sample sample)
     {
         // TO DO ca nu merege actualizarea numarului 
-        Child childFound = _childRepository.FindByName(child.Name);
+        Child childFound = _childRepository.FindOne(child.Id);
         if (childFound == null)
         {
-            try
-            {
-                childValidator.Validate(child);
-            }
-            catch (ValidationException e)
-            {
-                throw new ApplicationException();
-            }
+           
 
             childFound = _childRepository.Save(child);
         }
@@ -101,12 +91,13 @@ namespace Server
     private void notifyObservers(Registration registration)
     {
         IEnumerable<Organizing> orgs=_organizingRepository.FindAll();
-       // ExecutorService executor= Executors.newFixedThreadPool(defaultThreadsNo);
+     
         foreach(Organizing org in orgs){
             if(loggedClients.ContainsKey(org.Id))
             {
                 ICompetitionObserver client=loggedClients[org.Id];
                 Task.Run(() =>client.participantsRegistered(registration));
+                Console.WriteLine("statatatatatta");
             }
         }
     }
@@ -140,6 +131,11 @@ namespace Server
         if (localClient==null)
             throw new CompetitionException("User "+user.Username+" is not logged in.");
         loggedClients.Remove(user.Id);
+    }
+
+    public int numberOfChildrenForSample(Sample sample)
+    {
+        return _registrationRepository.NumberOfChildrenForSample(sample);
     }
     }
 }

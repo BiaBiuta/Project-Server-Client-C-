@@ -48,11 +48,11 @@ namespace Networking
         }
 
         [Serializable]
-        public class FindChild : Request
+        public class FindChildRequest : Request
         {
             private ChildDTO _childDto;
 
-            public FindChild(ChildDTO childDto)
+            public FindChildRequest(ChildDTO childDto)
             {
                 this._childDto = childDto;
             }
@@ -174,7 +174,23 @@ namespace Networking
             }
         }
         
-        
+        [Serializable]
+        public class NumberOfChildren : Request
+        {
+            private SamplesDTO _samplesDto;
+
+            public NumberOfChildren(SamplesDTO samplesDto)
+            {
+                this._samplesDto = samplesDto;
+            }
+            public virtual SamplesDTO SamplesDto
+            {
+                get
+                {
+                    return _samplesDto;
+                }
+            }
+        }
 
         [Serializable]
         public class FindAllSample : Request

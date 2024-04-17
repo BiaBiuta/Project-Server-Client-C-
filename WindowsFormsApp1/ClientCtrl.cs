@@ -70,7 +70,7 @@ public class ClientCtrl:ICompetitionObserver
 
         public int numberOfRegistration(Sample sample)
         {
-            return server.numberOfRegistration(sample);
+            return server.numberOfChildrenForSample(sample);
         }
 
         public Organizing FindOrganizing(string username, string password)

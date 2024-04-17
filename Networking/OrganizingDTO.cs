@@ -8,19 +8,26 @@ namespace Networking
         private string username;
         private string password;
         private string name;
+        private string id;
 
         public OrganizingDTO(string username, string password)
         {
             this.username = username;
             this.password = password;
         }
-
-        public OrganizingDTO(string username, string password, string name)
+        public OrganizingDTO(string id,string username, string password)
         {
             this.username = username;
             this.password = password;
-            this.name = name;
+            this.id = id;
         }
+
+        public virtual string Id
+        {
+            get => id;
+            set => id = value;
+        }
+
         public virtual string Username
         {
             get

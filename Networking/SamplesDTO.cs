@@ -9,6 +9,11 @@ namespace Networking
         private string sampleCategory;
         private string agecategory;
 
+        public SamplesDTO(string id)
+        {
+            this.id = id;
+        }
+
         public SamplesDTO(string id, string sampleCategory, string agecategory)
         {
             this.id = id;

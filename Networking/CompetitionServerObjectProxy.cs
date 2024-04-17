@@ -69,12 +69,13 @@ namespace Networking
 			try
 			{
                 _waitHandle.WaitOne();
-				// lock (responses)
-				// {
+                Console.WriteLine("am scos din coada");
+				lock (responses)
+				{
                     //Monitor.Wait(responses); 
                     response = responses.Dequeue();
                 
-				// }
+				}
 				
 
 			}
@@ -113,7 +114,8 @@ namespace Networking
 			if (update is NewResponse)
 			{
 
-				RegistrationDTO registrationDto = (RegistrationDTO)update;
+				NewResponse registration = (NewResponse)update;
+				RegistrationDTO registrationDto = registration.RegistrationDto;
 				Registration reg = DTOUtils.getFromDTO(registrationDto);
 				Console.WriteLine("new registration"+reg);
 				try
@@ -173,9 +175,11 @@ namespace Networking
 
 			public IEnumerable<Sample> findAllSamle()
 			{
-				Request req = new FindAllSample();
+				FindAllSample req = new FindAllSample();
 				sendRequest(req);
+				Console.WriteLine("am trimis cerere ");
 				Response response=readResponse();
+				Console.WriteLine("am primit raspuns ");
 				if (response is ErrorResponse)
 				{
 					ErrorResponse errorResponse = (ErrorResponse)response;
@@ -225,11 +229,7 @@ namespace Networking
 				return children;
 			}
 
-			public int numberOfRegistration(Sample sample)
-			{
-				//to do
-				return 0;
-			}
+			
 
 			public void x()
 			{
@@ -245,8 +245,8 @@ namespace Networking
 				}
 				SamplesDTO sampleDTO= DTOUtils.getDTO(sample);
 				Sample sample1= findSample(sampleDTO.AgeCategory,sampleDTO.SampleCategory);
-				RegistrationDTO regDTO=new RegistrationDTO(child1.Id.ToString(),sample1.Id.ToString());
-				Request req=new RegisterChild(regDTO);
+				RegistrationDTO regDTO=new RegistrationDTO(child1.Id.ToString(),sample1.Id.ToString(),sample1.SampleCategory.GetCategoryName(),sample1.AgeCategory.GetCategoryName());
+				RegisterChild req=new RegisterChild(regDTO);
 				sendRequest(req);
 				Response response=readResponse();
 				if (response is ErrorResponse)
@@ -265,7 +265,7 @@ namespace Networking
 			{
 				Child child=new Child(name,age);
 				ChildDTO childDTO=new ChildDTO(name,age.ToString());
-				Request req = new SaveChild(childDTO);
+				SaveChild req = new SaveChild(childDTO);
 				sendRequest(req);
 				Response response=readResponse();
 				if (response is ErrorResponse)
@@ -283,7 +283,8 @@ namespace Networking
 			public Child FindChild(string userName)
 			{
 				ChildDTO org=new ChildDTO(userName);
-				Request req = new FindChild(org);
+				FindChildRequest req = new FindChildRequest(org);
+				
 				sendRequest(req);
 				Response response=readResponse();
 				if (response is ErrorResponse)
@@ -291,13 +292,12 @@ namespace Networking
 					ErrorResponse err = (ErrorResponse)response;
 					throw new CompetitionException(err.Message);
 				}
-
-				FindChildResponse resp = (FindChildResponse)response;
+FindChildResponse resp = (FindChildResponse)response;
 				ChildDTO orgDTO = resp.ChildDto;
 				if (orgDTO==null)
 					return null;
 				Child org1= DTOUtils.getFromDTO(orgDTO);
-				return org1;
+				return null;
 			}
 
 			
@@ -311,7 +311,7 @@ namespace Networking
 				{
 
 					ErrorResponse err = (ErrorResponse)response;
-					closeConnection();
+					//closeConnection();
 					throw new CompetitionException(err.Message);
 				}else{
 
@@ -337,6 +337,21 @@ namespace Networking
 					ErrorResponse err = (ErrorResponse)response;
 					throw new CompetitionException(err.Message);
 				}
+			}
+
+			public int numberOfChildrenForSample(Sample sample)
+			{
+				SamplesDTO udto = DTOUtils.getDTO(sample);
+				NumberOfChildren req = new NumberOfChildren(udto);
+				sendRequest(req);
+				Response response=readResponse();
+				if (response is ErrorResponse)
+				{
+					ErrorResponse err = (ErrorResponse)response;
+					throw new CompetitionException(err.Message);
+				}
+				NumberOfChildrenResponse numberString=(NumberOfChildrenResponse)response;
+				return int.Parse(numberString.Number);
 			}
     }
 }

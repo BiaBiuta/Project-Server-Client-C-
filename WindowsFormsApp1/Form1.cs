@@ -24,7 +24,7 @@ namespace WindowsFormsApp1
             this._clientCtrl = service;
             InitializeDataGridView();
             LoadSamples();
-           // _clientCtrl.updateEvent += userUpdate;
+             _clientCtrl.updateEvent += userUpdate;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -49,22 +49,24 @@ namespace WindowsFormsApp1
             foreach (Sample sample in samples)
             {
                 int reg = _clientCtrl.numberOfRegistration(sample);
+               //int reg = 0;
                 dataGridView.Rows.Add(sample.SampleCategory.ToString(), sample.AgeCategory.ToString(), reg.ToString());
             }
         }
-        // public void userUpdate(object sender, ChatUserEventArgs e)
-        // {
-        //     if (e.UserEventType==CompetitionUserEventArgs.ParticipantRegister)
-        //     {
-        //         String friendId = e.Data.ToString();
-        //         friendsData.Add(friendId);
-        //         Console.WriteLine("[ChatWindow] friendLoggedIn "+ friendId);
-        //         friendList.BeginInvoke(new UpdateListBoxCallback(this.updateListBox), new Object[]{friendList, friendsData});
-        //         //   friendList.BeginInvoke((Action) delegate { friendList.DataSource = friendsData; });
-        //
-        //     }
-        //    
-        // }
+        public void userUpdate(object sender, ChatUserEventArgs e)
+        {
+            if (e.UserEventType==CompetitionUserEventArgs.ParticipantRegister)
+            {
+                // String friendId = e.Data.ToString();
+                // friendsData.Add(friendId);
+                Console.WriteLine("[ChatWindow] friendLoggedIn ");
+                // friendList.BeginInvoke(new UpdateListBoxCallback(this.updateListBox), new Object[]{friendList, friendsData});
+                // //   friendList.BeginInvoke((Action) delegate { friendList.DataSource = friendsData; });
+                // LoadSamples();
+                // LoadChildRegistrations(selectedSample);
+            }
+           
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {

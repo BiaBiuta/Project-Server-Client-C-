@@ -117,6 +117,14 @@ namespace Networking
 				   return new ErrorResponse(e.Message);
 				}
 			}
+			if (request is NumberOfChildren ){
+				Console.WriteLine("GetParticipants Request ...");
+				NumberOfChildren req = (NumberOfChildren)request;
+				SamplesDTO sdto = req.SamplesDto;
+				Sample sample=server.findSample(sdto.AgeCategory,sdto.SampleCategory);
+				int number=server.numberOfChildrenForSample(sample);
+				return new NumberOfChildrenResponse(number.ToString());
+			}
 			if (request is FindAllSample)
 			{
 				Console.WriteLine("SendMessageRequest ...");
@@ -134,7 +142,6 @@ namespace Networking
 				try
 				{
 					Organizing org=server.FindOrganizing(user.Username,user.Password);
-					connected=false;
 					OrganizingDTO orgFind = DTOUtils.getDTO(org);
 					return new FindOrganizingResponse(orgFind);
 
@@ -144,16 +151,17 @@ namespace Networking
 					return new ErrorResponse(e.Message);
 				}
 			}
-			if (request is FindChild)
+			if (request is FindChildRequest)
 			{
 				Console.WriteLine("Logout request");
-				FindChild findOrganizing =(FindChild)request;
+				FindChildRequest findOrganizing =(FindChildRequest)request;
 				ChildDTO udto =findOrganizing.ChildDto;
 				Child user =DTOUtils.getFromDTO(udto);
 				try
 				{
 					Child ch=server.FindChild(user.Name);
-					connected=false;
+					// Console.WriteLine(ch.Id);
+					// Console.WriteLine(ch.Name);
 					ChildDTO chDto = DTOUtils.getDTO(ch);
 					return new FindChildResponse(chDto);
 
@@ -172,7 +180,6 @@ namespace Networking
 				try
 				{
 					Child ch=server.saveChild(user.Name,user.Age);
-					connected=false;
 					ChildDTO chDto = DTOUtils.getDTO(ch);
 					return new SaveChildResponse(chDto);
 
@@ -191,7 +198,6 @@ namespace Networking
 				try
 				{
 					Sample spl=server.findSample(udto.AgeCategory,udto.SampleCategory);
-					connected=false;
 					SamplesDTO splDto = DTOUtils.getDTO(spl);
 					return new FindSampleResponse(splDto);
 
@@ -210,7 +216,6 @@ namespace Networking
 				try
 				{
 					Registration spl=server.registerChild(user.Child,user.Sample);
-					connected=false;
 					RegistrationDTO splDto = DTOUtils.getDTO(spl);
 					return new RegisterChildResponse(splDto);
 
@@ -268,4 +273,5 @@ namespace Networking
 		}
     }
 
+    
 }

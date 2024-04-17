@@ -8,9 +8,11 @@ namespace Domain.domain
         {
             Name = name;
             Age = age;
+            NumberOfSamples = 0;
         }
-        public Child(String childId):base() {
-           
+        public Child(String childId):base()
+        {
+            NumberOfSamples = 0;
         }
 
         public String Name { get; set; }

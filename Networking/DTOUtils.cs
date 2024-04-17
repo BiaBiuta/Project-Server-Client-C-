@@ -10,13 +10,25 @@ namespace Networking
         public static Organizing getFromDTO(OrganizingDTO orgdto) {
             String username = orgdto.Username;
             String password = orgdto.Password;
+            if (orgdto.Id != null)
+            {
+                Organizing org=new Organizing(username,password);
+                org.Id=int.Parse(orgdto.Id);
+                return org;
+            }
             return new Organizing(username, password);
         }
         public  static  OrganizingDTO getDTO(Organizing org){
             String username=org.Username;
             String password=org.Password;
             String name=org.Name;
-            return new OrganizingDTO(username,password);
+            if(org.Id!=0) {
+                String id=org.Id.ToString();
+                return new OrganizingDTO(id, username, password);
+            }
+            else {
+                return new OrganizingDTO(username, password);
+            }
         }
         public static Sample getFromDTO(SamplesDTO sampleDTO) {
             String sampleCategory = sampleDTO.SampleCategory;
@@ -31,10 +43,14 @@ namespace Networking
         public static  RegistrationDTO getDTO(Registration sample) {
             String sampleId = sample.Sample.Id.ToString();
             String childId = sample.Child.Id.ToString();
-            return new RegistrationDTO(childId, sampleId);
+            return new RegistrationDTO(childId, sampleId,sample.Sample.SampleCategory.GetCategoryName(),sample.Sample.AgeCategory.GetCategoryName());
         }
         public static Registration getFromDTO(RegistrationDTO sampleDTO) {
             Sample sampleId=new Sample(sampleDTO.SampleId);
+            if(sampleDTO.SampleCategory!=null && sampleDTO.AgeCategory!=null) {
+                sampleId.SampleCategory=SampleCategoryExtensions.FromString(sampleDTO.SampleCategory);
+                sampleId.AgeCategory=AgeCategoryExtensions.FromString(sampleDTO.AgeCategory);
+            }
             sampleId.Id=int.Parse(sampleDTO.SampleId);
             Child childId=new Child (sampleDTO.SampleId);
             childId.Id=int.Parse(sampleDTO.ChildId);
@@ -47,11 +63,18 @@ namespace Networking
             return new SamplesDTO(sampleCategory1,ageCategory1);
         }
         String id=sample.Id.ToString();
+        if(sample.SampleCategory.GetCategoryName()==null|| sample.AgeCategory.GetCategoryName()==null){
+            return new SamplesDTO(id);
+        }
         String sampleCategory=sample.SampleCategory.GetCategoryName();
         String ageCategory=sample.AgeCategory.GetCategoryName();
         return new SamplesDTO(id,sampleCategory,ageCategory);
 }
     public static Child getFromDTO(ChildDTO sampleDTO) {
+        if (sampleDTO == null)
+        {
+            return null;
+        }
         String id=sampleDTO.Id;
         String name = sampleDTO.Name;
         if (sampleDTO.Age==null)
@@ -60,14 +83,27 @@ namespace Networking
         Child child= new Child(name, age);
         if(id!=null)
             child.Id=int.Parse(id);
-        child.NumberOfSamples=int.Parse(sampleDTO.NumberOfSamples);
+
+        if (sampleDTO.NumberOfSamples == null)
+        {
+            child.NumberOfSamples = 0;
+        }
+        else
+        {
+            child.NumberOfSamples = int.Parse(sampleDTO.NumberOfSamples);
+        }
+
         return child;
     }
     public static  ChildDTO getDTO(Child sample){
+        if (sample == null)
+        {
+            return null;
+        }
         String name=sample.Name;
         String age=sample.Age.ToString();
         String numberOfSamples=sample.NumberOfSamples.ToString();
-        if(sample.Id==null)
+        if(sample.Id==0)
             return new ChildDTO(name,age,numberOfSamples);
         String id=sample.Id.ToString();
         ChildDTO childDTO=new ChildDTO(id,name,age,numberOfSamples);

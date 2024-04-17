@@ -174,7 +174,7 @@ namespace Networking
                 this._samplesDto = orgDto;
             }
         
-            public virtual RegistrationDTO SamplesDto
+            public virtual RegistrationDTO RegistrationDto
             {
                 get
                 {
@@ -220,5 +220,21 @@ namespace Networking
                 }
             }
             
+        }
+        [Serializable]
+        public class NumberOfChildrenResponse : Response
+        {
+            private String number;
+            public NumberOfChildrenResponse(string toString)
+            {
+                number = toString;
+            }
+            public virtual String Number
+            {
+                get
+                {
+                    return number;
+                }
+            }
         }
 }

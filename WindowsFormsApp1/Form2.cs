@@ -15,7 +15,7 @@ public partial class Form2 : Form
         InitializeComponent();
        
         this._service = service;
-        button1.Click += button1_Click;
+       // button1.Click += button1_Click;
     }
 
     private void button1_Click(object sender, EventArgs e)
